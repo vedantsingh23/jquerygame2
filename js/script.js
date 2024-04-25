@@ -1,63 +1,66 @@
-$(document).ready(function(){
-    //Maze size/dimension
-    var mazeHeight = 400
-    var mazeWidth = 400
+$(document).ready(function() {
+//Maze Size/Dimensions
+var mazeHeight = 400
+var mazeWidth = 400
 
-    //player starting position
-    var playerX = 20
-    var playerY = 20
+//Player starting position
+var playerX = 20
+var playerY = 20
 
-    //move function for player
-    function movePlayer(dx, dy){
-        var newX = playerX + dx;
-        var newY = playerY + dy;
+//Movement Functionality for player
+function movePlayer(dx, dy) {
+    var newX = playerX + dx;
+    var newY = playerY + dy;
 
-        //verify new position is inside the maze walls
-        if (newX >= 0 && newX < mazeWidth && newY >= 0 && newY < mazeHeight){
-            if(!$('#maze').find('.wall').is('[style="top: ' + newY + 'px; left: ' + newX + 'px;"]')){
-                //we can move player now
-                playerX = newX;
-                playerY = newY;
-                $('#player').css({top: playerX + 'px', left: playerY + 'px'});
-            }
-
-            //check to see if player is at end
-            if(playerX === 380 && playerY === 380){
-                alert("Congrats you won stupid idiot")
-            }
+    //Verify new position is inside of the maze walls
+    if (newX >= 0 && newX < mazeWidth && newY >= 0 && newY < mazeHeight) {
+        //Check to see if the new position is a wall or not
+        if (!$('#maze').find('.wall').is('[style="top: ' + newY + 'px; left: ' + newX + 'px;"]')) {
+            //We can move the player
+            playerX = newX;
+            playerY = newY;
+            $('#player').css({ top: playerY + 'px', left: playerX + 'px' });
         }
+
+        //Check to see if the player reaches the end
+        if(playerX === 380 && playerY === 380){
+            alert("Congratulations you made it throught maze")
+        }
+
+    }
+}
+
+// Keypress Event Listener
+$(document).keydown(function(e){
+    switch (e.which) {
+        case 37: // Left arrow
+            movePlayer(-20, 0);
+            break;
+        case 38: // Up arrow
+            movePlayer(0, -20);
+            break;
+        case 39: // Right arrow
+            movePlayer(20, 0);
+            break;
+        case 40: // Down arrow
+            movePlayer(0, 20);
+            break;
+        }
+})
+
+//Create Maze Walls
+var wallCoordinates = [
+    {top:20, left:20},//wall 1
+    {top:20, left:100},//wall 2
+    {top: 20, left: 160},
+    //Add more walls here and in the scss
+]
+
+for (var i = 0; i < wallCoordinates.length; i++) {
+    $('#maze').append('<div class="wall" style="top: ' + wallCoordinates[i].top + 'px; left: ' + wallCoordinates[i].left + 'px;"></div>');
     }
 
-    // Keypress Event Listeners
-    $(document).keydown(function(e){
-        switch(e.which){
-            case 37: //left arrow
-                movePlayer(0, -20)
-                break;
-            case 38: //up arrow
-                movePlayer(-20, 0)
-                break;
-            case 40: //down
-                movePlayer(20, 0)
-                break;
-            case 39: //right
-                movePlayer(0, 20)
-                break;
-        }
-    })
+//Create the player and append it to the board
+$('#maze').append('<div class="player" id="player" style="top: '+ playerY + 'px; left: ' + playerX + 'px;"></div>')
 
-    //create maze walls
-
-    var wallCoordinates = [
-        {top:20, left:20},
-        {top:20, left:100}
-        //add more walls here
-    ]
-
-    for(var i = 0; i < wallCoordinates.length; i++){
-        $('#maze').append('<div class="wall" style="top: ' + wallCoordinates[i].top + 'px; left: ' + wallCoordinates[i].left + 'px;"></div>')
-    }
-
-    //create the player and append it to the board
-    $('#maze').append('<div class="player" id="player" style="top: ' + playerY + 'px; left: ' + playerX + 'px;"></div>')
 })
