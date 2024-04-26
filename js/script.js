@@ -1,7 +1,7 @@
 $(document).ready(function() {
 //Maze Size/Dimensions
-var mazeHeight = 400
-var mazeWidth = 400
+var mazeHeight = 780
+var mazeWidth = 780
 
 //Player starting position
 var playerX = 20
